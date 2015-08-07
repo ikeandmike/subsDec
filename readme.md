@@ -1,10 +1,18 @@
 README
 
 PROGRAM:       SUBSTITUTION DECODER
+
+
 WRITTEN BY:    MICHAEL GIANCOLA
+
+
 CREATED ON:    08/06/2015
+
+
 LAST MODIFIED: 08/06/2015
-DESCRIPTION:   Decodes given text file, either by frequency analysis or using a Caesar cypher (not available yet). Eventually, I plan to allow the user to specify their own frequency table.
+
+
+DESCRIPTION:   Decodes given text file, either by frequency analysis or using a Caesar cipher (not available yet). Eventually, I plan to allow the user to specify their own frequency table.
 
 
 Release Notes:

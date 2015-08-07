@@ -11,10 +11,10 @@ int main(int argc, char* argv[]) {
   char temp;
   int typ,rot;
 
-  printf("Which type of decryption?\n0:All\n1:Frequency Analysis\n2:Caesar Cipher\n"); 
+  printf("Which type of decryption?\n0:All\n1:Frequency Analysis\n2:Caesar Cipher\n");
   temp = getCharacter();
-  typ = atoi(&temp); 
-  
+  typ = atoi(&temp);
+
   if(typ==0 || typ==1){
     char convert[26] = {'e','t','a','o','i','n','s','h','r','d','l','u','c',
                         'm','w','f','y','g','p','b','v','k','x','j','q','z'};
@@ -109,7 +109,7 @@ int findHighest(int* arr, int size){
   return result;
 }
 
-/*Performs a Caesar Cypher by rotating every letter by rotate.
+/*Performs a Caesar Cipher by rotating every letter by rotate.
  *If rotate is -1, the function attempts to guess the rotation by
  *starting at rotate=1 and incrementing until it finds a word that
  *shows up in the dictionary*/
