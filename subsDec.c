@@ -1,7 +1,7 @@
 /* PROGRAM:       SUBSTITUTION DECODER
  * WRITTEN BY:    MICHAEL GIANCOLA
  * CREATED ON:    08/06/2015
- * LAST MODIFIED: 08/06/2015
+ * LAST MODIFIED: 08/07/2015
  * DESCRIPTION:   DECODES GIVEN TEXT FILE
  */
 
@@ -16,15 +16,13 @@ int main(int argc, char* argv[]) {
   typ = atoi(&temp);
 
   if(typ==0 || typ==1){
-    char convert[26] = {'e','t','a','o','i','n','s','h','r','d','l','u','c',
-                        'm','w','f','y','g','p','b','v','k','x','j','q','z'};
     FILE* fp = fopen(argv[1],"r");
     FILE* fp2 = fopen("frequency.txt", "w");
     if(fp==NULL || fp2==NULL){
       printf("File Error\n");
       exit(1);
     }
-    freqAnalysis(fp,fp2,&convert[0]);
+    freqAnalysis(fp,fp2);
     fclose(fp);
     fclose(fp2);
   }
@@ -48,9 +46,12 @@ int main(int argc, char* argv[]) {
   return 0;
 }
 
-void freqAnalysis(FILE* in, FILE* out, char* table){
-  char c, freq[26];
+void freqAnalysis(FILE* in, FILE* out){
+  char c, encode[26], decode[26];
   int i, hist[26];
+
+  decode = {'e','t','a','o','i','n','s','h','r','d','l','u','c',
+            'm','w','f','y','g','p','b','v','k','x','j','q','z'};
 
   //Create a histogram of characters in input
   while((c = fgetc(in)) != EOF){
@@ -62,18 +63,18 @@ void freqAnalysis(FILE* in, FILE* out, char* table){
   rewind(in);
 
   //Stores characters of the alphabet in order of highest frequency
-  for(i=0; i<26; i++){
-    freq[i] = findHighest(&hist[0],26) + 97;
-    hist[freq[i]-97] = 0;
-    printf("%d %c\n", i, freq[i]);
-  }
+  encode = {'a','b','c','d','e','f','g','h','i','j','k','l','m',
+            'n','o','p','q','r','s','t','u','v','w','x','y','z'};
+  sortAlpha(&hist[0],&encode[0],26);
+
+  //TODO Option to modify frequency table goes here
 
   //Reads character from input, finds the corresponding plaintext
   //character, and writes it to output
   while((c = fgetc(in)) != EOF){
     c = tolower(c);
-    i = indexOf(&freq[0], 26, c);
-    if(i!=-1) fputc(table[i],out);
+    i = indexOf(&encode[0], 26, c);
+    if(i!=-1) fputc(decode[i],out);
   }
 }
 
@@ -98,15 +99,32 @@ int indexOf(char* arr, int size, char val){
   return -1;
 }
 
-/*Returns the index of the highest value in arr
- *If the highest value occurs more than once in arr, the first
- *occurance is used*/
-int findHighest(int* arr, int size){
-  int i, result;
-  result=0;
-  for(i=1; i<size; i++)
-    if(arr[i] > arr[i-1]) result = i;
-  return result;
+/*Sorts the alphabet according to the frequency of each
+ *character determined by hist
+ *
+ *Essentially, the function sorts both arrays such that hist
+ *is in descending order.
+ *
+ * -hist and alphaArr are parallel arrays, where the number
+ *  in hist corresponds to the frequency of the letter
+ * -hist and alphaArr must be the same size
+ *
+ * Implementation of Insertion Sort*/
+void sortAlpha(int* hist, char* alphaArr, int size) {
+  int i,j,k;
+  char x;  
+
+  for(i=1; i<size; i++){
+    for(j=i; j>0 && (hist[j]>hist[j-1]); j--){
+      k = hist[j];
+      hist[j] = hist[j-1];
+      hist[j-1] = k;
+
+      x = alphaArr[j];
+      alphaArr[j] = alphaArr[j-1];
+      alphaArr[j-1] = x;
+    }
+  }
 }
 
 /*Performs a Caesar Cipher by rotating every letter by rotate.
