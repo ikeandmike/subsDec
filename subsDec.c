@@ -13,7 +13,7 @@ int main(int argc, char* argv[]) {
 
   printf("Which type of decryption?\n0:All\n1:Frequency Analysis\n2:Caesar Cipher\n");
   temp = getCharacter();
-  typ = atoi(&temp);
+  typ = temp - '0';
 
   if(typ==0 || typ==1){
     FILE* fp = fopen(argv[1],"r");
@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
   if(typ==0 || typ==2){
     printf("Rotation Amount? ");
     temp = getCharacter();
-    rot = atoi(&temp);
+    rot = temp - '0';
 
     FILE* fp = fopen(argv[1],"r");
     FILE* fp2 = fopen("caesar.txt", "w");
